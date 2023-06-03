@@ -1,63 +1,61 @@
-import React, {Component} from 'react';
-import './App.css';
-import Header from './components/header';
-import TodoInput from './components/todoInput';
-import TodoItem from './components/todoItem';
+import React, { useState } from "react";
+import "./App.css";
+import Header from "./components/header";
+import TodoInput from "./components/todoInput";
+import TodoItem from "./components/todoItem";
 
+const initialToDoList = {
+  todos: [
+    { id: 0, text: "eat breakfast!" },
+    { id: 1, text: "eat lunch!" },
+    { id: 2, text: "eat dinner!" },
+  ],
+  nextId: 3,
+};
 
-class App extends Component {
-  constructor(props) {
-    super(props);
+const App = () => {
+  const [toDoList, setToDoList] = useState(initialToDoList);
 
-    this.state = {
-       todos: [
-         {id: 0, text: "eat breakfast!"},
-         {id: 1, text: "eat lunch!"},
-         {id: 2, text: "eat dinner!"}
-       ],
-       nextId: 3
-    }
-
-    this.addTodo = this.addTodo.bind(this);
-    this.removeTodo = this.removeTodo.bind(this);
-  } 
-
-  addTodo(todoText) {
-    // console.log( "todoAdd", todoText)
-    let todos = this.state.todos.slice();
-    todos.push({id: this.state.nextId, text: todoText})
-    this.setState({
+  const addTodo = (todoText) => {
+    let todos = toDoList.todos;
+    console.log("addTodo", { id: toDoList.nextId, text: todoText });
+    todos.push({ id: toDoList.nextId, text: todoText });
+    setToDoList({
       todos: todos,
-      nextId: ++this.state.nextId
-    }) 
-  }
+      nextId: ++toDoList.nextId,
+    });
+  };
 
-  removeTodo(id) {
-    // console.log( "todoRemove", id)
-    this.setState({
-      todos: this.state.todos.filter((todo,index)=>todo.id !==id )
-    }) 
-  }
+  const removeTodo = (id) => {
+    setToDoList({
+      ...toDoList,
+      todos: toDoList.todos.filter((todo, index) => todo.id !== id),
+    });
+  };
 
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
+  return (
+    <div className="App">
+      <header className="App-header">
         <div className="todo-wrapper">
           <Header />
-          <TodoInput todoText="" addTodo={this.addTodo}/>
+          <TodoInput todoText="" addTodo={addTodo} />
           <ul>
-            {
-              this.state.todos.map((todo)=>{
-                return  <TodoItem todo={todo} key={todo.id} id={todo.id} removeTodo={this.removeTodo} />
-              })
-            }
+            {toDoList.todos.map((todo) => {
+              console.log(todo.id);
+              return (
+                <TodoItem
+                  todo={todo}
+                  key={todo.id}
+                  id={todo.id}
+                  removeTodo={removeTodo}
+                />
+              );
+            })}
           </ul>
         </div>
-        </header>
-      </div>
-    );
-  }
-}
+      </header>
+    </div>
+  );
+};
 
 export default App;

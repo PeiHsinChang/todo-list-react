@@ -1,20 +1,15 @@
-import React from 'react';
-import './todoItem.css';
+import React from "react";
+import "./todoItem.css";
 
-export default class TodoItem extends React.Component {
-    constructor(props){
-        super(props);        
-    }
+const TodoItem = ({ todo, id, removeTodo }) => {
+  return (
+    <div className="todoWrapper">
+      <button className="removeTodo " onClick={(e) => removeTodo(id)}>
+        remove
+      </button>
+      {todo.text}
+    </div>
+  );
+};
 
-    removeTodo(id) {
-        this.props.removeTodo(id)
-    }
-
-    render() {
-        return (
-            <div className="todoWrapper">
-                <button className="removeTodo " onClick={(e)=>this.removeTodo(this.props.id)}>remove</button>{this.props.todo.text}
-            </div>
-        )
-    }
-}
+export default TodoItem;

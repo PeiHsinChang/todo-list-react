@@ -13,6 +13,7 @@ export default class TodoInput extends React.Component {
     }
 
     handleChange(e) {
+        console.log("text:",e.target.value);       
         this.setState({value: e.target.value})
     }
     addTodo(todo) {
